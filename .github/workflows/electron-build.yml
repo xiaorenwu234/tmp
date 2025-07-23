@@ -1,0 +1,39 @@
+name: Electron Build
+
+on:
+  push:
+    branches: [ main ]
+  release:
+    types: [ created ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ macos-latest, windows-latest, ubuntu-latest ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Electron app
+        run: npm run build
+
+      - name: Build and package Electron app
+        uses: samuelmeuli/action-electron-builder@v1
+        with:
+          build_script_name: dist
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release: ${{ github.event_name == 'release' }}
+          package_root: .
+          skip_build: true
+          args: --config electron-builder.yml

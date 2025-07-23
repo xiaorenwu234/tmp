@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/render/src/*"]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "out",
+    "src/render/public/*",
+    "src/render/dist/*",
+    "src/render/lib/*"
+  ]
+}
